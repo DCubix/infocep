@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:infocep/theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const InfoCEPRoot());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class InfoCEPRoot extends StatelessWidget {
+  const InfoCEPRoot({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: appTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
