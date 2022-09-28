@@ -23,6 +23,14 @@ final ThemeData appTheme = ThemeData(
   indicatorColor: const Color(0xff3f51b5),
   hintColor: const Color(0x8a000000),
   errorColor: const Color(0xffd32f2f),
+  cardTheme: const CardTheme(
+    clipBehavior: Clip.antiAlias,
+    color: Colors.white,
+    elevation: 5.0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    )
+  ),
   buttonTheme: const ButtonThemeData(
     textTheme: ButtonTextTheme.primary,
     minWidth: 88,

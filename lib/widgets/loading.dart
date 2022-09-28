@@ -12,6 +12,12 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Center(child: SpinKitFadingCircle(color: theme.primaryTextTheme.caption!.color,));
+    return Center(
+      child: SpinKitFadingCircle(
+        color: theme.primaryColor,
+        duration: const Duration(milliseconds: 400),
+        size: 32.0,
+      ),
+    );
   }
 }
