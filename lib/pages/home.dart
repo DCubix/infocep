@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
@@ -37,7 +38,12 @@ class _HomePageState extends State<HomePage> {
       : null;
 
     final list = await dao.query(
-      finder: Finder(filter: filter, offset: start, limit: 20, sortOrders: [ SortOrder('dataRegistro', false) ])
+      finder: Finder(
+        filter: filter,
+        offset: start,
+        limit: 20,
+        sortOrders: [ SortOrder('dataRegistro', false) ],
+      ),
     );
 
     if (list.isEmpty) {
@@ -49,6 +55,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const AppTitle(),
@@ -63,9 +70,27 @@ class _HomePageState extends State<HomePage> {
 
           final data = snap.data ?? [];
           if (data.isEmpty) {
-            return const Empty(
+            return Empty(
               state: EmptyState.empty,
-              message: 'Nenhum endereço encontrado.',
+              message: [
+                const TextSpan(
+                  text: 'Nenhum endereço encontrado. Clique em '
+                ),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    onPressed: () {},
+                    label: const Text('Novo'),
+                    icon: const Icon(Icons.add),
+                  ),
+                ),
+                const TextSpan(
+                  text: ' para começar.'
+                ),
+              ],
             );
           }
 
@@ -73,6 +98,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(12.0),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        icon: const Icon(Icons.add),
+        label: const Text('Novo'),
       ),
     );
   }

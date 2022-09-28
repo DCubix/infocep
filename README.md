@@ -7,6 +7,10 @@
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 * Flutter 3.3.2
 
+## Vetores e Imagens
+* Flaticon: https://www.flaticon.com/
+* LogoMakr: https://logomakr.com/
+
 ## 📫 Contribuindo para o Info CEP
 Para contribuir com o desenvolvimento do Info CEP, siga estas etapas:
 

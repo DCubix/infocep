@@ -28,12 +28,9 @@ final ThemeData appTheme = ThemeData(
     minWidth: 88,
     height: 36,
     padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
-    shape: StadiumBorder(
-        side: BorderSide(
-      color: Color(0xff000000),
-      width: 0,
-      style: BorderStyle.none,
-    )),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(99.0)),
+    ),
     alignedDropdown: false,
     buttonColor: Color(0xff3f51b5),
     disabledColor: Color(0x61000000),

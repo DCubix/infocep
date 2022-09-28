@@ -14,24 +14,31 @@ class Empty extends StatelessWidget {
   const Empty({ required this.state, required this.message, super.key});
 
   final EmptyState state;
-  final String message;
+  final List<InlineSpan> message;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
-      fontSize: 24.0,
+    final theme = Theme.of(context);
+    final textStyle = theme.textTheme.headline6!.copyWith(
       fontWeight: FontWeight.w400,
       color: Colors.grey[600],
     );
+
     return Center(
       child: SizedBox(
-        width: 250.0,
+        width: 300.0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(_emptyStateImages[state]!, width: 100.0, color: Colors.grey[500],),
-            const SizedBox(height: 16.0,),
-            Text(message, style: textStyle, textAlign: TextAlign.center),
+            const SizedBox(height: 10.0,),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: textStyle,
+                children: message,
+              ),
+            ),
           ],
         ),
       ),
