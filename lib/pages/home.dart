@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
+import 'package:infocep/pages/buscar_endereco.dart';
 import 'package:infocep/storage/dao.dart';
 import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/empty.dart';
@@ -53,10 +54,15 @@ class _HomePageState extends State<HomePage> {
     return list.map((e) => Endereco.fromInternal(e)).toList();
   }
 
+  _buscarEnderecoAction() async {
+    await Get.to(() => const BuscarEnderecoPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const AppTitle(),
       ),
       backgroundColor: Colors.grey[200],
@@ -81,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                     ),
-                    onPressed: () {},
+                    onPressed: _buscarEnderecoAction,
                     label: const Text('Novo'),
                     icon: const Icon(Icons.add),
                   ),
@@ -99,7 +105,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: _buscarEnderecoAction,
         icon: const Icon(Icons.add),
         label: const Text('Novo'),
       ),

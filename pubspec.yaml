@@ -18,8 +18,8 @@ dependencies:
   advance_notification: ^1.0.6
   http: ^0.13.5
   string_similarity: ^2.0.0
-  mapbox_gl: ^0.16.0
-  flutter_dotenv: ^5.0.2
+  flutter_map: ^3.0.0
+  latlong2: ^0.8.1
 
 dev_dependencies:
   flutter_test:

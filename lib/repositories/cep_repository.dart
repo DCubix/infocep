@@ -12,7 +12,7 @@ class CEPRepository {
     if (res.statusCode == 200) {
       return Result.success(Endereco.fromBrasilAPI(json.decode(res.body)));
     } else if (res.statusCode == 404) {
-      return Result.error(message: 'CEP não encontrado.');
+      return Result.error(message: 'Endereço não encontrado.');
     }
     
     return Result.error(message: 'Erro desconhecido.');
@@ -25,7 +25,8 @@ class CEPRepository {
     if (res.statusCode == 200) {
       final obj = json.decode(res.body) as List;
       if (obj.isEmpty) {
-        return Result.error(message: 'Endereço não encontrado.');
+        // Faz o fallback para busca por CEP
+        return buscaPorCEP(busca);
       }
 
       // Múltiplos resultados são gerados

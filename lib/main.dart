@@ -3,10 +3,8 @@ import 'package:get/get.dart';
 import 'package:infocep/pages/home.dart';
 import 'package:infocep/storage/dao.dart';
 import 'package:infocep/theme.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() async {
-  await dotenv.load(fileName: ".env");
+void main() {
   runApp(const InfoCEPRoot());
 }
 
@@ -17,6 +15,7 @@ class InfoCEPRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
+      defaultTransition: Transition.cupertino,
       theme: appTheme,
       builder: (context, child) {
         // Instancia dos Stores de dados internos.
