@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:infocep/pages/home.dart';
 import 'package:infocep/storage/dao.dart';
 import 'package:infocep/theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const InfoCEPRoot());
 }
 

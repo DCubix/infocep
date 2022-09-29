@@ -19,7 +19,7 @@ class Endereco {
     this.possuiCoordenadas = true
   });
 
-  factory Endereco.fromAPI(JSON ob) {
+  factory Endereco.fromBrasilAPI(JSON ob) {
     final possuiCoordenadas = ((ob['location'] as JSON)['coordinates'] as JSON).containsKey('latitude'); 
     final obj = Endereco(
       cep: ob['cep'],
@@ -34,12 +34,24 @@ class Endereco {
     );
 
     if (possuiCoordenadas) {
-      obj.latitude = ob['location']['coordinates']['latitude'];
-      obj.longitude = ob['location']['coordinates']['longitude'];
+      obj.latitude = double.parse(ob['location']['coordinates']['latitude']);
+      obj.longitude = double.parse(ob['location']['coordinates']['longitude']);
     }
 
     return obj;
   }
+
+  factory Endereco.fromNominatimAPI(JSON ob) => Endereco(
+    cep: (ob['address'] as JSON).containsKey('postcode') ? ob['address']['postcode'] : '',
+    estado: ob['address']['state'] ?? '',
+    cidade: ob['address']['town'] ?? ob['address']['city_district'] ?? '',
+    bairro: ob['address']['suburb'] ?? '',
+    rua: ob['address']['road'] ?? '',
+    latitude: ob['lat'],
+    longitude: ob['lon'],
+    possuiCoordenadas: true,
+    dataRegistro: DateTime.now(),
+  );
 
   factory Endereco.fromInternal(JSON ob) => Endereco(
     cep: ob['cep'],

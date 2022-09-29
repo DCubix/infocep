@@ -16,6 +16,10 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.11
   advance_notification: ^1.0.6
+  http: ^0.13.5
+  string_similarity: ^2.0.0
+  mapbox_gl: ^0.16.0
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +33,4 @@ flutter:
 
   assets:
     - assets/
+    - .env
