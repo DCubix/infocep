@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infocep/pages/home.dart';
 import 'package:infocep/storage/dao.dart';
-import 'package:infocep/theme.dart';
 
 void main() {
   runApp(const InfoCEPRoot());
@@ -16,7 +15,9 @@ class InfoCEPRoot extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       defaultTransition: Transition.cupertino,
-      theme: appTheme,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
       builder: (context, child) {
         // Instancia dos Stores de dados internos.
         Get.put(DAO('enderecos'), tag: 'enderecos');

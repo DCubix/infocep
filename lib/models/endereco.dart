@@ -47,8 +47,8 @@ class Endereco {
     cidade: ob['address']['town'] ?? ob['address']['city_district'] ?? '',
     bairro: ob['address']['suburb'] ?? '',
     rua: ob['address']['road'] ?? '',
-    latitude: ob['lat'],
-    longitude: ob['lon'],
+    latitude: ob['lat'] is String ? double.parse(ob['lat']) : ob['lat'],
+    longitude: ob['lon'] is String ? double.parse(ob['lon']) : ob['lon'],
     possuiCoordenadas: true,
     dataRegistro: DateTime.now(),
   );
@@ -76,5 +76,7 @@ class Endereco {
     'possuiCoordenadas': possuiCoordenadas,
     'dataRegistro': dataRegistro
   };
+
+  String get porExtenso => '$rua, $bairro, $cidade';
 
 }

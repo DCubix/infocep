@@ -220,7 +220,7 @@ final ThemeData appTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
   ),
-  inputDecorationTheme: const InputDecorationTheme(
+  inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(
       color: Color(0xdd000000),
       fontSize: null,
@@ -234,7 +234,7 @@ final ThemeData appTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     hintStyle: TextStyle(
-      color: Color(0xdd000000),
+      color: Colors.grey[600]!,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,

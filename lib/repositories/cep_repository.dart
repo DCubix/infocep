@@ -18,28 +18,31 @@ class CEPRepository {
     return Result.error(message: 'Erro desconhecido.');
   }
 
-  static Future<Result<Endereco>> buscaPorEndereco(String busca) async {
+  static Future<Result<List<Endereco>>> buscaPorEndereco(String busca) async {
     // faz uma busca usando a API Nominatim de Forward Geocoding
-    final url = Uri.parse('https://nominatim.openstreetmap.org/search?country=BR&format=json&addressdetails=1&polygon_geojson=1&accept-language=pt-BR&q=$busca');
+    final url = Uri.parse('https://nominatim.openstreetmap.org/search?country=BR&format=json&addressdetails=1&limit=5&accept-language=pt-BR&q=$busca');
     final res = await http.get(url);
     if (res.statusCode == 200) {
       final obj = json.decode(res.body) as List;
       if (obj.isEmpty) {
-        // Faz o fallback para busca por CEP
-        return buscaPorCEP(busca);
+        return Result.error(message: 'Endereço não encontrado.');
       }
-
-      // Múltiplos resultados são gerados
-      // logo, devemos buscar o que mais se encaixa na busca.
-      // Para isso, usamos um cálculo de similaridade.
-      final enderecosRetornados = obj.map((e) => e['display_name'] as String).toList();
-      final melhorResultado = busca.bestMatch(enderecosRetornados);
-
-      // Precisamos agora obter o objeto referente a este endereço.
-      final enderecoObject = obj.firstWhere((e) => e['display_name'] == melhorResultado);
-      return Result.success(Endereco.fromNominatimAPI(enderecoObject));
+      return Result.success(obj.map((e) => Endereco.fromNominatimAPI(e)).where((e) => e.cep.isNotEmpty).toList());
     }
     return Result.error(message: 'Erro ao buscar endereço. Por favor, tente novamente.');
+  }
+
+  static Future<Result<List<Endereco>>> buscaUnificada(String busca) async {
+    final cepRegex = RegExp(r'([0-9]{8})|([0-9]{5}\-[0-9]{3})');
+    if (cepRegex.hasMatch(busca)) {
+      final cepRes = await buscaPorCEP(busca);
+      if (cepRes.type == ResultType.success) {
+        return Result.success([cepRes.data!]);
+      } else {
+        return Result.error(message: cepRes.message);
+      }
+    }
+    return buscaPorEndereco(busca);
   }
 
 }
