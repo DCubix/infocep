@@ -1,11 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:infocep/controllers/endereco_controller.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/pages/buscar_endereco.dart';
 import 'package:infocep/storage/dao.dart';
 import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/empty.dart';
+import 'package:infocep/widgets/item_endereco.dart';
 import 'package:infocep/widgets/loading.dart';
 import 'package:sembast/sembast.dart';
 
@@ -20,60 +23,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final TextEditingController _buscaCtrl = TextEditingController();
-
-  int _start = 0;
-
-  Future<List<Endereco>> _listarSalvos(String busca, int start) async {
-    final dao = Get.find<DAO>(tag: 'enderecos');
-
-    final regexp = RegExp(busca, caseSensitive: false);
-    final filter = busca.trim().isNotEmpty ?
-      Filter.or([
-        Filter.matchesRegExp('cep', regexp),
-        Filter.matchesRegExp('estado', regexp),
-        Filter.matchesRegExp('cidade', regexp),
-        Filter.matchesRegExp('bairro', regexp),
-        Filter.matchesRegExp('rua', regexp),
-      ]) 
-      : null;
-
-    final list = await dao.query(
-      finder: Finder(
-        filter: filter,
-        offset: start,
-        limit: 20,
-        sortOrders: [ SortOrder('dataRegistro', false) ],
-      ),
-    );
-
-    if (list.isEmpty) {
-      return [];
-    }
-
-    return list.map((e) => Endereco.fromInternal(e)).toList();
+  _buscarEnderecoAction() async {
+    final ctrl = Get.find<EnderecoController>();
+    await Get.to(() => const BuscarEnderecoPage());
+    ctrl.buscar('');
   }
 
-  _buscarEnderecoAction() async {
-    await Get.to(() => const BuscarEnderecoPage());
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      final ctrl = Get.find<EnderecoController>();
+      ctrl.buscar('');
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = Get.find<EnderecoController>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const AppTitle(),
       ),
       backgroundColor: Colors.grey[200],
-      body: FutureBuilder<List<Endereco>>(
-        future: _listarSalvos(_buscaCtrl.text, _start),
-        builder: (_, snap) {
-          if (snap.connectionState != ConnectionState.done) {
-            return const Loading();
-          }
-
-          final data = snap.data ?? [];
+      body: ctrl.obx(
+        onLoading: const Center(child: CircularProgressIndicator()),
+        (state) {
+          final data = state ?? [];
           if (data.isEmpty) {
             return Empty(
               state: EmptyState.empty,
@@ -101,6 +79,9 @@ class _HomePageState extends State<HomePage> {
 
           return ListView(
             padding: const EdgeInsets.all(12.0),
+            children: [
+              ...data.map((e) => ItemEndereco(endereco: e)),
+            ],
           );
         },
       ),

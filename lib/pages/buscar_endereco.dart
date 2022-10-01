@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:infocep/models/endereco.dart';
+import 'package:infocep/repositories/endereco_repository.dart';
+import 'package:infocep/utils.dart';
 import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/bottom_dialog.dart';
 import 'package:infocep/widgets/busca_field.dart';
@@ -28,8 +30,17 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
         height: 40.0,
         anchorPos: AnchorPos.exactly(Anchor(26.2, 3.4)),
         builder: (_) => Image.asset('assets/pin.png'),
+        rotate: false,
       );
     });
+  }
+
+  _mostraInfoEndereco(Endereco endereco) {
+    BottomDialog.show(
+      context,
+      height: 100.0,
+      content: InfoEndereco(endereco: endereco),
+    );
   }
 
   @override
@@ -47,9 +58,16 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
             options: MapOptions(
               center: LatLng(-14.4086569, -51.31668),
               zoom: 4,
+              rotation: 0.0,
+              rotationThreshold: 180,
 
-              onTap: (tapPosition, point) {
+              onTap: (tapPosition, point) async {
                 _updateMarker(point);
+
+                final res = await EnderecoRepository.buscaReversa(point);
+                if (res.type == ResultType.success) {
+                  _mostraInfoEndereco(res.data!);
+                }
               },
             ),
             children: [
@@ -59,6 +77,7 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
               ),
 
               MarkerLayer(
+                rotate: false,
                 markers: [
                   if (_marker != null) _marker!,
                 ],
@@ -73,21 +92,7 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
                 _updateMarker(pos);
                 _ctrl.move(pos, 12.0);
               }
-
-              // abre tela inferior com informações
-              BottomDialog.show(
-                context,
-                title: 'Informações do Endereço',
-                height: 300.0,
-                content: InfoEndereco(endereco: e),
-                actionsBuilder: (context) => [
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.save),
-                    label: const Text('Salvar'),
-                  ),
-                ],
-              );
+              _mostraInfoEndereco(e);
             },
           ),
         ],

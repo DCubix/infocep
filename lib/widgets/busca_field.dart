@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:infocep/models/endereco.dart';
-import 'package:infocep/repositories/cep_repository.dart';
+import 'package:infocep/repositories/endereco_repository.dart';
 import 'package:infocep/utils.dart';
 
 class BuscaField extends StatefulWidget {
@@ -20,7 +20,7 @@ class _BuscaFieldState extends State<BuscaField> {
   final _options = <Endereco>[];
 
   _loadOptions(String busca) async {
-    final res = await CEPRepository.buscaUnificada(busca);
+    final res = await EnderecoRepository.buscaUnificada(busca);
     setState(() {
       _options.clear();
       if (res.type == ResultType.success) _options.addAll(res.data ?? []);

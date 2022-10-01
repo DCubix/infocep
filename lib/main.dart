@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infocep/controllers/endereco_controller.dart';
 import 'package:infocep/pages/home.dart';
 import 'package:infocep/storage/dao.dart';
 
@@ -21,6 +22,7 @@ class InfoCEPRoot extends StatelessWidget {
       builder: (context, child) {
         // Instancia dos Stores de dados internos.
         Get.put(DAO('enderecos'), tag: 'enderecos');
+        Get.put(EnderecoController());
 
         return child!;
       },

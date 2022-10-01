@@ -1,10 +1,11 @@
 import 'package:infocep/utils.dart';
+import 'package:sembast/timestamp.dart';
 
 class Endereco {
 
   String cep, estado, cidade, bairro, rua;
   double latitude, longitude;
-  DateTime dataRegistro;
+  Timestamp dataRegistro;
   final bool possuiCoordenadas;
 
   Endereco({
@@ -30,7 +31,7 @@ class Endereco {
       latitude: 0,
       longitude: 0,
       possuiCoordenadas: possuiCoordenadas,
-      dataRegistro: DateTime.now(),
+      dataRegistro: Timestamp.now(),
     );
 
     if (possuiCoordenadas) {
@@ -50,7 +51,7 @@ class Endereco {
     latitude: ob['lat'] is String ? double.parse(ob['lat']) : ob['lat'],
     longitude: ob['lon'] is String ? double.parse(ob['lon']) : ob['lon'],
     possuiCoordenadas: true,
-    dataRegistro: DateTime.now(),
+    dataRegistro: Timestamp.now(),
   );
 
   factory Endereco.fromInternal(JSON ob) => Endereco(
@@ -78,5 +79,29 @@ class Endereco {
   };
 
   String get porExtenso => '$rua, $bairro, $cidade';
+
+  String get titulo {
+    final list = [
+      rua,
+      bairro,
+      cidade,
+      estado,
+      cep
+    ].where((element) => element.trim().isNotEmpty).toList();
+    return list.isNotEmpty ? list[0] : 'Endereço';
+  }
+
+  String get subtitulo {
+    final list = [
+      rua,
+      bairro,
+      cidade,
+      estado,
+      cep
+    ].where((element) => element.trim().isNotEmpty)
+     .where((element) => element != titulo)
+     .toList();
+    return list.join(', ');
+  }
 
 }

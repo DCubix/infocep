@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:infocep/models/endereco.dart';
 import 'package:http/http.dart' as http;
 import 'package:infocep/utils.dart';
-import 'package:string_similarity/string_similarity.dart';
+import 'package:latlong2/latlong.dart';
 
-class CEPRepository {
+class EnderecoRepository {
 
   static Future<Result<Endereco>> buscaPorCEP(String cep) async {
     final res = await http.get(Uri.parse('https://brasilapi.com.br/api/cep/v2/$cep'));
@@ -43,6 +43,16 @@ class CEPRepository {
       }
     }
     return buscaPorEndereco(busca);
+  }
+
+  static Future<Result<Endereco>> buscaReversa(LatLng point) async {
+    final res = await http.get(
+      Uri.parse('https://nominatim.openstreetmap.org/reverse?lat=${point.latitude}&lon=${point.longitude}&format=json&addressdetails=1&accept-language=pt-BR')
+    );
+    if (res.statusCode == 200) {
+      return Result.success(Endereco.fromNominatimAPI(json.decode(res.body)));
+    }
+    return Result.error(message: 'Endereço não encontrado.');
   }
 
 }
