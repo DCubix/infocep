@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:implicitly_animated_list/implicitly_animated_list.dart';
 import 'package:infocep/controllers/endereco_controller.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/pages/buscar_endereco.dart';
@@ -77,11 +78,10 @@ class _HomePageState extends State<HomePage> {
             );
           }
 
-          return ListView(
-            padding: const EdgeInsets.all(12.0),
-            children: [
-              ...data.map((e) => ItemEndereco(endereco: e)),
-            ],
+          return ImplicitlyAnimatedList<Endereco>(
+            padding: const EdgeInsets.all(12.0).copyWith(bottom: 70.0),
+            itemData: data,
+            itemBuilder: (_, e) => ItemEndereco(endereco: e),
           );
         },
       ),

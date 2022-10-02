@@ -20,6 +20,8 @@ dependencies:
   string_similarity: ^2.0.0
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
+  implicitly_animated_list: ^2.1.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

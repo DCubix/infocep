@@ -18,7 +18,9 @@ class BuscarEnderecoPage extends StatefulWidget {
 
 class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
 
+  final _bottomSheetKey = GlobalKey<ScaffoldState>();
   final _ctrl = MapController();
+  late PersistentBottomSheetController _sheetCtrl;
 
   Marker? _marker;
 
@@ -36,16 +38,28 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
   }
 
   _mostraInfoEndereco(Endereco endereco) {
-    BottomDialog.show(
-      context,
-      height: 100.0,
-      content: InfoEndereco(endereco: endereco),
+    _sheetCtrl = _bottomSheetKey.currentState!.showBottomSheet(
+      (context) => Card(
+        margin: const EdgeInsets.all(16.0),
+        elevation: 6.0,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: InfoEndereco(endereco: endereco),
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _bottomSheetKey,
       appBar: AppBar(
         centerTitle: true,
         title: const AppTitle(title: 'Buscar CEP',),

@@ -61,12 +61,12 @@ class _BuscaFieldState extends State<BuscaField> {
                       final option = options.elementAt(index);
                       return ListTile(
                         visualDensity: VisualDensity.compact,
-                        title: Text(option.porExtenso),
-                        subtitle: Text(option.cep),
+                        title: Text(option.subtitulo),
+                        dense: true,
                         onTap: () => onSelected(option),
                       );
                     },
-                    separatorBuilder: (__, index) => const Divider(),
+                    separatorBuilder: (__, index) => const Divider(height: 4.0),
                   ),
                 ),
               ),
@@ -87,6 +87,7 @@ class _BuscaFieldState extends State<BuscaField> {
                 _timer!.cancel();
               }
               _timer = Timer(const Duration(seconds: 1), () => _loadOptions(s));
+              setState(() {});
             },
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -107,6 +108,7 @@ class _BuscaFieldState extends State<BuscaField> {
               suffixIcon: textEditingController.text.isNotEmpty ? IconButton(
                 onPressed: () {
                   textEditingController.text = '';
+                  setState(() {});
                 },
                 visualDensity: VisualDensity.compact,
                 padding: const EdgeInsets.all(0.0),
