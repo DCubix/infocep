@@ -58,9 +58,9 @@ class _HomePageState extends State<HomePage> {
         title: 'Sim',
         icon: Icons.check_rounded,
         onPressed: () async {
+          Navigator.pop(context);
           final ctrl = Get.find<EnderecoController>();
           await ctrl.deletar(endereco);
-          Navigator.pop(context);
           _refresh();
         },
       ),
