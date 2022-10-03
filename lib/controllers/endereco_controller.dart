@@ -20,6 +20,15 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
     change(state, status: RxStatus.success());
   }
 
+  deletar(Endereco endereco) async {
+    change(state, status: RxStatus.loading());
+
+    final dao = Get.find<DAO>(tag: 'enderecos');
+    await dao.delete(Filter.equals('key', endereco.key));
+
+    change(state, status: RxStatus.success());
+  }
+
   buscar(String busca, [int start = 0]) async {
     change(state, status: RxStatus.loading());
 
@@ -40,7 +49,7 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
       finder: Finder(
         filter: filter,
         offset: start,
-        limit: 20,
+        limit: 10,
         sortOrders: [ SortOrder('dataRegistro', false) ],
       ),
     );

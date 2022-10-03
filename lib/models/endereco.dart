@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:infocep/utils.dart';
 import 'package:sembast/timestamp.dart';
 
@@ -67,6 +69,7 @@ class Endereco {
   );
 
   toInternal() => {
+    'key': key,
     'cep': cep,
     'estado': estado,
     'cidade': cidade,
@@ -103,5 +106,7 @@ class Endereco {
      .toList();
     return list.join(', ');
   }
+
+  String get key => base64.encode(utf8.encode('$latitude-$longitude-$cep'));
 
 }

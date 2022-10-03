@@ -25,7 +25,7 @@ class Storage {
   _openDatabase() async {
     final appDocumentDir = await getApplicationDocumentsDirectory();
     final dbPath = path.join(appDocumentDir.path, 'data.db');
-    final database = await databaseFactoryIo.openDatabase(dbPath, version: 10, onVersionChanged: (db, oldVersion, newVersion) {});
+    final database = await databaseFactoryIo.openDatabase(dbPath, version: 20, onVersionChanged: (db, oldVersion, newVersion) {});
     _db!.complete(database);
   }
 

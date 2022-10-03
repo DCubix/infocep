@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
+import 'package:infocep/controllers/endereco_controller.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/repositories/endereco_repository.dart';
 import 'package:infocep/utils.dart';
 import 'package:infocep/widgets/app_title.dart';
-import 'package:infocep/widgets/bottom_dialog.dart';
 import 'package:infocep/widgets/busca_field.dart';
-import 'package:infocep/widgets/info_endereco.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sweetsheet/sweetsheet.dart';
 
 class BuscarEnderecoPage extends StatefulWidget {
   const BuscarEnderecoPage({super.key});
@@ -18,9 +19,9 @@ class BuscarEnderecoPage extends StatefulWidget {
 
 class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
 
-  final _bottomSheetKey = GlobalKey<ScaffoldState>();
   final _ctrl = MapController();
-  late PersistentBottomSheetController _sheetCtrl;
+
+  final SweetSheet _sweetSheet = SweetSheet();
 
   Marker? _marker;
 
@@ -38,28 +39,31 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
   }
 
   _mostraInfoEndereco(Endereco endereco) {
-    _sheetCtrl = _bottomSheetKey.currentState!.showBottomSheet(
-      (context) => Card(
-        margin: const EdgeInsets.all(16.0),
-        elevation: 6.0,
-        clipBehavior: Clip.antiAlias,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: InfoEndereco(endereco: endereco),
-        ),
+    final theme = Theme.of(context);
+    _sweetSheet.show(
+      context: context,
+      title: Text(endereco.titulo, style: const TextStyle(fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.w400)),
+      description: Text(endereco.subtitulo, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
+      color: CustomSheetColor(
+        main: Colors.white,
+        accent: theme.primaryColor,
+        icon: theme.primaryColor,
       ),
-      backgroundColor: Colors.transparent,
-      elevation: 0.0,
+      positive: SweetSheetAction(
+        title: 'Salvar',
+        icon: Icons.save_alt_rounded,
+        onPressed: () {
+          final ctrl = Get.find<EnderecoController>();
+          ctrl.salvar(endereco);
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _bottomSheetKey,
       appBar: AppBar(
         centerTitle: true,
         title: const AppTitle(title: 'Buscar CEP',),
