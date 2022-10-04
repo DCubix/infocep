@@ -80,7 +80,7 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Text('CEPs/Endereços Salvos', style: const pw.TextStyle(fontSize: 25.0, color: PdfColors.black)),
+                pw.Text('CEPs/Endereços Salvos', style: const pw.TextStyle(fontSize: 22.0, color: PdfColors.black)),
                 pw.Image(logo, width: 100.0, fit: pw.BoxFit.contain),
               ]
             ),
