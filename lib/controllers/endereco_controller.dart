@@ -71,46 +71,47 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
 
     final logo = await imageFromAssetBundle('assets/logopdf.png');
     final pdf = pw.Document();
-    pdf.addPage(pw.Page(
+    pdf.addPage(pw.MultiPage(
       pageFormat: PdfPageFormat.a4,
+      header: (pw.Context context) => pw.Column(
+        mainAxisSize: pw.MainAxisSize.min,
+        children: [
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('CEPs/Endereços Salvos', style: const pw.TextStyle(fontSize: 22.0, color: PdfColors.black)),
+              pw.Image(logo, width: 100.0, fit: pw.BoxFit.contain),
+            ]
+          ),
+          pw.Divider(),
+          pw.SizedBox(height: 16.0),
+        ]
+      ),
       build: (pw.Context context) {
-        return pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.stretch,
-          children: [
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        return [
+          ...state!.map((e) => pw.Container(
+            margin: const pw.EdgeInsets.all(16.0).copyWith(top: 0.0),
+            padding: const pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+            decoration: const pw.BoxDecoration(
+              border: pw.Border(
+                left: pw.BorderSide(
+                  color: PdfColors.indigo,
+                  width: 6.0,
+                )
+              ),
+            ),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              mainAxisSize: pw.MainAxisSize.min,
               children: [
-                pw.Text('CEPs/Endereços Salvos', style: const pw.TextStyle(fontSize: 22.0, color: PdfColors.black)),
-                pw.Image(logo, width: 100.0, fit: pw.BoxFit.contain),
+                pw.Text(e.titulo, style: const pw.TextStyle(fontSize: 18.0, color: PdfColors.black)),
+                pw.Text(e.subtitulo, style: const pw.TextStyle(fontSize: 13.0, color: PdfColors.grey600)),
+                pw.SizedBox(height: 6.0),
+                pw.Text(DateFormat('dd/MM/yyyy HH:mm').format(e.dataRegistro.toDateTime()), style: const pw.TextStyle(fontSize: 10.0, color: PdfColors.grey600)),
               ]
             ),
-            pw.Divider(),
-            pw.SizedBox(height: 16.0),
-
-            ...state!.map((e) => pw.Container(
-              margin: const pw.EdgeInsets.all(16.0).copyWith(top: 0.0),
-              padding: const pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              decoration: const pw.BoxDecoration(
-                border: pw.Border(
-                  left: pw.BorderSide(
-                    color: PdfColors.indigo,
-                    width: 6.0,
-                  )
-                ),
-              ),
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                mainAxisSize: pw.MainAxisSize.min,
-                children: [
-                  pw.Text(e.titulo, style: const pw.TextStyle(fontSize: 18.0, color: PdfColors.black)),
-                  pw.Text(e.subtitulo, style: const pw.TextStyle(fontSize: 13.0, color: PdfColors.grey600)),
-                  pw.SizedBox(height: 6.0),
-                  pw.Text(DateFormat('dd/MM/yyyy HH:mm').format(e.dataRegistro.toDateTime()), style: const pw.TextStyle(fontSize: 10.0, color: PdfColors.grey600)),
-                ]
-              ),
-            )),
-          ]
-        );
+          )),
+        ];
       }
     ));
 
