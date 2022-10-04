@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/pages/endereco_view.dart';
 
@@ -19,7 +20,7 @@ class ItemEndereco extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => EnderecoViewPage(endereco: endereco)));
+          Get.to(() => EnderecoViewPage(endereco: endereco));
         },
         child: Container(
           decoration: BoxDecoration(

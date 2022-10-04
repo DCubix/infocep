@@ -66,7 +66,7 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const AppTitle(title: 'Buscar CEP',),
+        title: const AppTitle(title: 'Buscar',),
       ),
       backgroundColor: Colors.grey[200],
       body: Stack(

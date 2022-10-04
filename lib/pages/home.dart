@@ -8,10 +8,9 @@ import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/empty.dart';
 import 'package:infocep/widgets/item_endereco.dart';
 import 'package:infocep/widgets/loading.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:pagination_view/pagination_view.dart';
 import 'package:sweetsheet/sweetsheet.dart';
-
-const perPageCount = 20;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,6 +66,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  _exportar() async {
+    final theme = Theme.of(context);
+
+    final ctrl = Get.find<EnderecoController>();
+    final file = await ctrl.gerarPdf();
+
+    _sweetSheet.show(
+      context: context,
+      title: const Text('Relatório Exportado', style: TextStyle(fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.w400)),
+      description: Text('Seu relatório foi exportado com sucesso.', style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
+      color: CustomSheetColor(
+        main: Colors.white,
+        accent: theme.primaryColor,
+        icon: theme.primaryColor,
+      ),
+      positive: SweetSheetAction(
+        title: 'Abrir',
+        icon: Icons.file_open_rounded,
+        onPressed: () {
+          OpenFilex.open(file.path);
+        },
+      ),
+      negative: SweetSheetAction(
+        title: 'Fechar',
+        icon: Icons.close,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +113,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const AppTitle(),
+        actions: [
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+            ),
+            onPressed: _exportar,
+            icon: const Icon(Icons.file_present_rounded),
+            label: const Text('Exportar'),
+          ),
+        ]
       ),
       backgroundColor: Colors.grey[200],
       body: Column(
