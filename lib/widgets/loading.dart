@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
-  const Loading({super.key});
+  const Loading({ this.color, super.key});
+
+  final Color? color;
 
   @override
   State<Loading> createState() => _LoadingState();
@@ -14,7 +16,7 @@ class _LoadingState extends State<Loading> {
     final theme = Theme.of(context);
     return Center(
       child: SpinKitFadingCircle(
-        color: theme.primaryColor,
+        color: widget.color ?? theme.primaryColor,
         duration: const Duration(milliseconds: 400),
         size: 32.0,
       ),

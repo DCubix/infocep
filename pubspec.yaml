@@ -21,6 +21,9 @@ dependencies:
   intl: ^0.17.0
   sweetsheet: ^0.4.0
   pagination_view: ^2.0.0
+  url_launcher: ^6.1.6
+  rive: ^0.9.0
+  package_info_plus: ^1.4.3+1
 
 dev_dependencies:
   flutter_test:

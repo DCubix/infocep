@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infocep/controllers/endereco_controller.dart';
 import 'package:infocep/pages/home.dart';
+import 'package:infocep/pages/splash.dart';
 import 'package:infocep/storage/dao.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class InfoCEPRoot extends StatelessWidget {
 
         return child!;
       },
-      home: const HomePage(),
+      home: const SplashPage(),
     );
   }
 }
