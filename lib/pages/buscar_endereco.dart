@@ -108,7 +108,7 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
               if (e.possuiCoordenadas) {
                 final pos = LatLng(e.latitude, e.longitude);
                 _updateMarker(pos);
-                _ctrl.move(pos, 12.0);
+                _ctrl.move(pos, 16.0);
               }
               _mostraInfoEndereco(e);
             },

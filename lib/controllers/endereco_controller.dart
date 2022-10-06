@@ -6,7 +6,6 @@ import 'package:infocep/storage/dao.dart';
 import 'package:intl/intl.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:sembast/sembast.dart';
 import 'package:pdf/pdf.dart';
