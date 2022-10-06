@@ -7,7 +7,6 @@ import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/empty.dart';
 import 'package:infocep/widgets/item_endereco.dart';
 import 'package:infocep/widgets/loading.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
