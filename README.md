@@ -6,12 +6,8 @@
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 * Flutter 3.3.2
-* Crie um arquivo chamado `.env` na raíz do projeto com o seguinte conteúdo:
-    ```dotenv
-    MAPBOX_ACCESS_TOKEN=<token de acesso do Mapbox>
-    ```
 
-## Vetores e Imagens
+## 🎨 Vetores e Imagens
 * Flaticon: https://www.flaticon.com/
 * LogoMakr: https://logomakr.com/
 

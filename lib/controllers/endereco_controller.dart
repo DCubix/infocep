@@ -34,7 +34,12 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
     final dao = Get.find<DAO>(tag: 'enderecos');
     await dao.delete(Filter.equals('key', endereco.key));
 
-    change(state!.where((e) => e.key != endereco.key).toList(), status: RxStatus.success());
+    final newState = state!.where((e) => e.key != endereco.key).toList();
+    if (newState.isNotEmpty) {
+      change(newState, status: RxStatus.success());
+    } else {
+      change([], status: RxStatus.empty());
+    }
   }
 
   Future loadData() async {
