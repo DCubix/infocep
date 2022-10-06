@@ -38,10 +38,6 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
     });
   }
 
-  _mostraInfoEnderecoBuscaReversa(LatLng point) async {
-    
-  }
-
   _mostraInfoEndereco(Endereco endereco) {
     final theme = Theme.of(context);
     _sweetSheet.show(
