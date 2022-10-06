@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/widgets/app_title.dart';
 import 'package:infocep/widgets/info_endereco.dart';
@@ -9,9 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EnderecoViewPage extends StatefulWidget {
-  const EnderecoViewPage({ required this.endereco, super.key});
-
-  final Endereco endereco;
+  const EnderecoViewPage({ super.key});
 
   @override
   State<EnderecoViewPage> createState() => _EnderecoViewPageState();
@@ -40,13 +39,16 @@ class _EnderecoViewPageState extends State<EnderecoViewPage> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      _updateMarker(LatLng(widget.endereco.latitude, widget.endereco.longitude));
+      final endereco = Get.arguments as Endereco;
+      _updateMarker(LatLng(endereco.latitude, endereco.longitude));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final endereco = Get.arguments as Endereco;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -61,7 +63,7 @@ class _EnderecoViewPageState extends State<EnderecoViewPage> {
               center: LatLng(-14.4086569, -51.31668),
               zoom: 4,
               rotation: 0.0,
-              rotationThreshold: 180,
+              rotationThreshold: 0,
             ),
             children: [
               TileLayer(
@@ -100,7 +102,7 @@ class _EnderecoViewPageState extends State<EnderecoViewPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    InfoEndereco(endereco: widget.endereco),
+                    InfoEndereco(endereco: endereco),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -108,7 +110,7 @@ class _EnderecoViewPageState extends State<EnderecoViewPage> {
                           color: theme.primaryColor,
                           visualDensity: VisualDensity.compact,
                           onPressed: () async {
-                            final e = widget.endereco;
+                            final e = endereco;
                             await Clipboard.setData(ClipboardData(
                               text: 'https://www.google.com/maps/?t=k&q=${e.latitude},${e.longitude}'
                             ));
@@ -120,7 +122,7 @@ class _EnderecoViewPageState extends State<EnderecoViewPage> {
                           color: theme.primaryColor,
                           visualDensity: VisualDensity.compact,
                           onPressed: () async {
-                            final e = widget.endereco;
+                            final e = endereco;
                             final url = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${e.latitude},${e.longitude}&travelmode=driving&dir_action=navigate');
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);

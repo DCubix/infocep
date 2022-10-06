@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
-import 'package:infocep/pages/endereco_view.dart';
 
 class ItemEndereco extends StatelessWidget {
   const ItemEndereco({ required this.endereco, this.onDelete, super.key});
@@ -19,9 +18,7 @@ class ItemEndereco extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          Get.to(() => EnderecoViewPage(endereco: endereco));
-        },
+        onTap: () => Get.toNamed('/visualizar', arguments: endereco),
         child: Container(
           decoration: BoxDecoration(
             border: Border(

@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: 2500));
-      Get.off(() => const HomePage());
+      Get.offNamed('/home');
     });
   }
 

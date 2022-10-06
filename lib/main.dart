@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infocep/controllers/endereco_controller.dart';
+import 'package:infocep/controllers/binding.dart';
+import 'package:infocep/pages/buscar_endereco.dart';
+import 'package:infocep/pages/endereco_view.dart';
 import 'package:infocep/pages/home.dart';
 import 'package:infocep/pages/splash.dart';
-import 'package:infocep/storage/dao.dart';
 
 void main() {
   runApp(const InfoCEPRoot());
@@ -15,18 +16,19 @@ class InfoCEPRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'InfoCEP',
       defaultTransition: Transition.cupertino,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      builder: (context, child) {
-        // Instancia dos Stores de dados internos.
-        Get.put(DAO('enderecos'), tag: 'enderecos');
-        Get.put(EnderecoController());
-
-        return child!;
-      },
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const SplashPage()),
+        GetPage(name: '/home', page: () => HomePage()),
+        GetPage(name: '/buscar', page: () => const BuscarEnderecoPage()),
+        GetPage(name: '/visualizar', page: () => const EnderecoViewPage()),
+      ],
+      initialBinding: StoreBinding(),
       home: const SplashPage(),
     );
   }

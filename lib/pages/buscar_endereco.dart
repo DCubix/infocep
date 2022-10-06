@@ -38,6 +38,10 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
     });
   }
 
+  _mostraInfoEnderecoBuscaReversa(LatLng point) async {
+    
+  }
+
   _mostraInfoEndereco(Endereco endereco) {
     final theme = Theme.of(context);
     _sweetSheet.show(
@@ -77,7 +81,7 @@ class _BuscarEnderecoPageState extends State<BuscarEnderecoPage> {
               center: LatLng(-14.4086569, -51.31668),
               zoom: 4,
               rotation: 0.0,
-              rotationThreshold: 180,
+              rotationThreshold: 0,
 
               onTap: (tapPosition, point) async {
                 _updateMarker(point);

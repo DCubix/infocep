@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:infocep/models/endereco.dart';
 import 'package:infocep/storage/dao.dart';
 import 'package:intl/intl.dart';
+import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
@@ -14,36 +15,34 @@ import 'package:path/path.dart' as path;
 
 class EnderecoController extends GetxController with StateMixin<List<Endereco>> {
 
+  var busca = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
-    change([], status: RxStatus.success());
+    loadData();
   }
 
   salvar(Endereco endereco) async {
-    change(state, status: RxStatus.loading());
-
     final dao = Get.find<DAO>(tag: 'enderecos');
     await dao.insert(endereco.toInternal());
 
-    change(state, status: RxStatus.success());
+    change([ endereco, ...(state ?? []) ], status: RxStatus.success());
   }
 
   deletar(Endereco endereco) async {
-    change(state, status: RxStatus.loading());
-
     final dao = Get.find<DAO>(tag: 'enderecos');
     await dao.delete(Filter.equals('key', endereco.key));
 
-    change(state, status: RxStatus.success());
+    change(state!.where((e) => e.key != endereco.key).toList(), status: RxStatus.success());
   }
 
-  buscar(String busca, [int start = 0]) async {
+  Future loadData() async {
     change(state, status: RxStatus.loading());
 
     final dao = Get.find<DAO>(tag: 'enderecos');
 
-    final regexp = RegExp(busca, caseSensitive: false);
+    final regexp = RegExp(busca.value, caseSensitive: false);
     final filter = busca.trim().isNotEmpty ?
       Filter.or([
         Filter.matchesRegExp('cep', regexp),
@@ -57,17 +56,17 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
     final list = await dao.query(
       finder: Finder(
         filter: filter,
-        offset: start,
-        limit: 10,
         sortOrders: [ SortOrder('dataRegistro', false) ],
       ),
     );
 
-    change(list.map((e) => Endereco.fromInternal(e)).toList(), status: RxStatus.success());
+    final convertedList = list.map((e) => Endereco.fromInternal(e)).toList();
+    change(convertedList, status: convertedList.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
   Future<File> gerarPdf() async {
-    await buscar('');
+    busca.value = '';
+    await loadData();
 
     final logo = await imageFromAssetBundle('assets/logopdf.png');
     final pdf = pw.Document();
@@ -115,12 +114,9 @@ class EnderecoController extends GetxController with StateMixin<List<Endereco>> 
       }
     ));
 
-    if (!(await Permission.manageExternalStorage.isGranted)) {
-      await Permission.manageExternalStorage.request();
-    }
+    var dir = await DownloadsPath.downloadsDirectory();
+    dir ??= await getApplicationDocumentsDirectory();
 
-    final directories = await getExternalStorageDirectories(type: StorageDirectory.downloads);
-    final dir = directories != null ? directories.first : (await getApplicationDocumentsDirectory());
     final infoCEPdir = Directory(path.join(dir.path, 'InfoCEP'));
     final fmt = DateFormat('dd_MM_yyyy_HH_mm_ss');
 
